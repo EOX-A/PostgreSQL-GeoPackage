@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+echo "User custom provision step"
+
 # Add your custom configuration below.
 
 # Add alias

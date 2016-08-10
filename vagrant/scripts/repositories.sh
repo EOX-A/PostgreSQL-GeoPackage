@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+echo "Package repositories provision step"
+
 # Install apt sources
 cat << EOF > /etc/apt/sources.list
 ##### WARNING ### WARNING ### WARNING ### WARNING ### WARNING ### WARNING #####
