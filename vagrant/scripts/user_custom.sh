@@ -13,6 +13,3 @@ EOF
 alias l="ls -lah"
 EOF
 fi
-
-# Generate locales
-locale-gen en_US en_US.UTF-8 de_AT.UTF-8

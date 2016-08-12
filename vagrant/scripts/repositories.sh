@@ -32,6 +32,10 @@ deb http://security.ubuntu.com/ubuntu xenial-security main restricted universe m
 deb-src http://security.ubuntu.com/ubuntu xenial-security main restricted universe multiverse
 EOF
 
+# Generate locales
+locale-gen en_US en_US.UTF-8 de_AT.UTF-8
+update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+
 # Install administration packages
 apt-get update
 apt-get install -y software-properties-common aptitude
