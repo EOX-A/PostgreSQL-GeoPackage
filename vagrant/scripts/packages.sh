@@ -2,4 +2,4 @@
 
 echo "Package installation provision step"
 
-aptitude install -y gdal-bin postgis
+aptitude install -y gdal-bin postgis python-psycopg2
