@@ -33,9 +33,9 @@
 
 CREATE TABLE gpkg_spatial_ref_sys (
     srs_name TEXT NOT NULL,
-    srs_id INTEGER NOT NULL PRIMARY KEY,
+    srs_id BIGINT NOT NULL PRIMARY KEY,
     organization TEXT NOT NULL,
-    organization_coordsys_id INTEGER NOT NULL,
+    organization_coordsys_id BIGINT NOT NULL,
     definition TEXT NOT NULL,
     description TEXT
 );
@@ -96,13 +96,13 @@ CREATE TABLE gpkg_contents (
     min_y FLOAT,
     max_x FLOAT,
     max_y FLOAT,
-    srs_id INTEGER,
+    srs_id BIGINT,
     CONSTRAINT fk_gc_r_srs_id FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys(srs_id)
 );
 
 CREATE TABLE gpkg_tile_matrix_set (
     table_name TEXT NOT NULL PRIMARY KEY,
-    srs_id INTEGER NOT NULL,
+    srs_id BIGINT NOT NULL,
     min_x FLOAT NOT NULL,
     min_y FLOAT NOT NULL,
     max_x FLOAT NOT NULL,
@@ -113,11 +113,11 @@ CREATE TABLE gpkg_tile_matrix_set (
 
 CREATE TABLE gpkg_tile_matrix (
     table_name TEXT NOT NULL,
-    zoom_level INTEGER NOT NULL,
-    matrix_width INTEGER NOT NULL,
-    matrix_height INTEGER NOT NULL,
-    tile_width INTEGER NOT NULL,
-    tile_height INTEGER NOT NULL,
+    zoom_level BIGINT NOT NULL,
+    matrix_width BIGINT NOT NULL,
+    matrix_height BIGINT NOT NULL,
+    tile_width BIGINT NOT NULL,
+    tile_height BIGINT NOT NULL,
     pixel_x_size FLOAT NOT NULL,
     pixel_y_size FLOAT NOT NULL,
     CONSTRAINT pk_ttm PRIMARY KEY (table_name, zoom_level),
@@ -245,7 +245,7 @@ BEFORE UPDATE OF pixel_y_size ON gpkg_tile_matrix
 FOR EACH ROW EXECUTE PROCEDURE gpkg_tile_matrix_pixel_y_size_update();
 
 CREATE TABLE gpkg_metadata (
-    id INTEGER NOT NULL PRIMARY KEY,
+    id BIGINT NOT NULL PRIMARY KEY,
     md_scope TEXT NOT NULL DEFAULT 'dataset',
     md_standard_uri TEXT NOT NULL,
     mime_type TEXT NOT NULL DEFAULT 'text/xml',
@@ -280,10 +280,10 @@ CREATE TABLE gpkg_metadata_reference (
     reference_scope TEXT NOT NULL,
     table_name TEXT,
     column_name TEXT,
-    row_id_value INTEGER,
+    row_id_value BIGINT,
     timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
-    md_file_id INTEGER NOT NULL,
-    md_parent_id INTEGER,
+    md_file_id BIGINT NOT NULL,
+    md_parent_id BIGINT,
     CONSTRAINT crmr_mfi_fk FOREIGN KEY (md_file_id) REFERENCES gpkg_metadata(id),
     CONSTRAINT crmr_mpi_fk FOREIGN KEY (md_parent_id) REFERENCES gpkg_metadata(id)
 );
