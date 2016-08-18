@@ -28,7 +28,8 @@
 #
 # Description:
 #
-#   This script loads a creates GeoPackage into a PostgreSQL database.
+#   This script loads a SQLite GeoPackage into a PostgreSQL-GeoPackage
+#   database.
 #
 #   gpkg-pg_loadpkg.py takes a provided SQLite GeoPackage containing raster
 #   tile data only and loads it into the given PostgreSQL-GeoPackage database.
