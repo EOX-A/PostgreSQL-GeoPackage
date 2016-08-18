@@ -66,7 +66,6 @@ Run scripts:
 ```sh
 vagrant ssh
 cd /home/vagrant/PostgreSQL-GeoPackage/
-TODO
 ```
 
 ## How to use vagrant in a Windows environment
@@ -123,7 +122,6 @@ Use the following steps:
     ```sh
     vagrant ssh
     cd /home/vagrant/PostgreSQL-GeoPackage/
-    TODO
     ```
 
 ## Troubleshoot vagrant
