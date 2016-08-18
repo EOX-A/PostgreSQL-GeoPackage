@@ -49,19 +49,20 @@ def record_to_string(record):
     type_datetime = type(datetime.datetime.now())
     type_buffer = type(buffer(""))
     type_None = type(None)
+    type_float = type(0.0)
 
     values = []
     for item in record:
         if type(item) == type_None:
             values.append('NULL')
         elif type(item) == type_str:
-            values.append("'" + item.replace("'","''") + "'")
-            if item.find("Malaysian") != -1:
-                import pdb;pdb.set_trace()
+            values.append("'" + item.replace("'", "''") + "'")
         elif type(item) == type_datetime:
             values.append('"' + str(item) + '"')
         elif type(item) == type_buffer:
             values.append(psycopg2.Binary(item).getquoted())
+        elif type(item) == type_float:
+            values.append("%.19f" % item)
         else:
             values.append(str(item))
     return ','.join(values)
@@ -69,6 +70,7 @@ def record_to_string(record):
 
 def copy_table(conn_in, conn_out, table_name, constraint=None):
     cursor_in = conn_in.cursor()
+    #Check that table exists
     cursor_in.execute(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='%s';"
         % table_name
@@ -85,7 +87,8 @@ def copy_table(conn_in, conn_out, table_name, constraint=None):
                 values = record_to_string(record)
                 try:
                     cursor_out.execute(
-                        "INSERT INTO \"%s\" VALUES (%s);" % (table_name, values)
+                        "INSERT INTO \"%s\" VALUES (%s);" %
+                        (table_name, values)
                     )
                 except psycopg2.IntegrityError as e:
                     conn_out.rollback()

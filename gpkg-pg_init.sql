@@ -92,10 +92,10 @@ CREATE TABLE gpkg_contents (
     identifier TEXT UNIQUE,
     description TEXT DEFAULT '',
     last_change TIMESTAMPTZ NOT NULL DEFAULT now(),
-    min_x FLOAT,
-    min_y FLOAT,
-    max_x FLOAT,
-    max_y FLOAT,
+    min_x NUMERIC,
+    min_y NUMERIC,
+    max_x NUMERIC,
+    max_y NUMERIC,
     srs_id BIGINT,
     CONSTRAINT fk_gc_r_srs_id FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys(srs_id)
 );
@@ -103,10 +103,10 @@ CREATE TABLE gpkg_contents (
 CREATE TABLE gpkg_tile_matrix_set (
     table_name TEXT NOT NULL PRIMARY KEY,
     srs_id BIGINT NOT NULL,
-    min_x FLOAT NOT NULL,
-    min_y FLOAT NOT NULL,
-    max_x FLOAT NOT NULL,
-    max_y FLOAT NOT NULL,
+    min_x NUMERIC NOT NULL,
+    min_y NUMERIC NOT NULL,
+    max_x NUMERIC NOT NULL,
+    max_y NUMERIC NOT NULL,
     CONSTRAINT fk_gtms_table_name FOREIGN KEY (table_name) REFERENCES gpkg_contents(table_name),
     CONSTRAINT fk_gtms_srs FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys (srs_id)
 );
@@ -118,8 +118,8 @@ CREATE TABLE gpkg_tile_matrix (
     matrix_height BIGINT NOT NULL,
     tile_width BIGINT NOT NULL,
     tile_height BIGINT NOT NULL,
-    pixel_x_size FLOAT NOT NULL,
-    pixel_y_size FLOAT NOT NULL,
+    pixel_x_size NUMERIC NOT NULL,
+    pixel_y_size NUMERIC NOT NULL,
     CONSTRAINT pk_ttm PRIMARY KEY (table_name, zoom_level),
     CONSTRAINT fk_tmm_table_name FOREIGN KEY (table_name) REFERENCES gpkg_contents(table_name)
 );
