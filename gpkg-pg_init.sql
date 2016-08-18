@@ -4,7 +4,7 @@
 -- Authors: Stephan Meissl <stephan.meissl@eox.at>
 --
 -------------------------------------------------------------------------------
--- Copyright (C) 2016 EOX IT Services GmbH
+-- Copyright (c) 2016 EOX IT Services GmbH
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to
@@ -14,7 +14,7 @@
 -- furnished to do so, subject to the following conditions:
 --
 -- The above copyright notice and this permission notice shall be included in
--- all copies of this Software or works derived from this Software.
+-- all copies or substantial portions of the Software.
 --
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 -- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
