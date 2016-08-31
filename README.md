@@ -63,6 +63,15 @@ sqlite3 Sample-GeoPackage_Sentinel-2_Vienna_Austria.gpkg .dump > after
 diff before after
 ```
 
+Dump a spatial subset of the PostgreSQL-GeoPackage and validate it by visual
+comparison to a GDAL generated subset:
+
+```sh
+gdal_translate -of GPKG -srcwin 768 768 256 256 Sample-GeoPackage_Sentinel-2_Vienna_Austria.gpkg Sample-GeoPackage_Sentinel-2_Vienna_Austria_subset_gdal.gpkg
+rm Sample-GeoPackage_Sentinel-2_Vienna_Austria.gpkg
+./gpkg-pg_dump.py "dbname='gpkg' user='gpkg'" Sample-GeoPackage_Sentinel-2_Vienna_Austria -srcwin 3 3 1 1
+```
+
 Finally, drop the PostgreSQL-GeoPackage:
 
 ```sh
