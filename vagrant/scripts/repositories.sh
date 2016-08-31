@@ -45,4 +45,4 @@ add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
 # Upgrade packages
 aptitude update
-aptitude safe-upgrade -y
+#aptitude safe-upgrade -y
