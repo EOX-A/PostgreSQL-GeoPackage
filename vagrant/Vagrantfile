@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider "virtualbox" do |v|
     v.name = "PostgreSQL-GeoPackage-vagrant"
-    v.customize ["modifyvm", :id, "--memory", 1024, "--cpus", 2]
+    v.customize ["modifyvm", :id, "--memory", 2048, "--cpus", 2]
     v.customize ["modifyvm", :id, "--ioapic", "on", "--largepages", "off", "--vtxvpid", "off"]
   end
 end
