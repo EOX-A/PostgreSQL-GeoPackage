@@ -113,10 +113,9 @@ def copy_table(conn_in, conn_out, table_name, constraint=None):
                 "SELECT * FROM \"%s\"%s;" % (table_name, "" if constraint is
                                              None else " WHERE " + constraint)
             )
-            records = cursor_in.fetchall()
 
             cursor_out = conn_out.cursor()
-            for record in records:
+            for record in cursor_in:
                 values = record_to_string(record)
                 try:
                     cursor_out.execute(
@@ -234,40 +233,39 @@ def dump_gpkg(pg_connection_string, gpkg_name, srcwin=None):
                            % gpkg_name)
 
                 #dump tiles
-                #copy_table(conn_in, conn_out, gpkg_name, has_blob=True)
-
-                cursor_in.execute(
-                    "SELECT id, zoom_level, tile_column, tile_row, tile_data "
-                    "FROM \"%s\"%s;" % (gpkg_name, "" if constraint is
-                                        None else " WHERE " + constraint)
-                )
-                records = cursor_in.fetchall()
-
-                cursor_out = conn_out.cursor()
-                cursor_out.execute(
-                    "SELECT max(zoom_level) FROM gpkg_tile_matrix WHERE "
-                    "table_name = '%s';" % gpkg_name
-                )
-                zoom_offset = max_zoom_level - cursor_out.fetchone()[0]
-                for record in records:
-
-                    try:
-                        cursor_out.execute(
-                            "INSERT INTO \"%s\" (zoom_level, tile_column, "
-                            "tile_row, tile_data) VALUES (?, ?, ?, ?);"
-                            % gpkg_name,
-                            (record[1]-zoom_offset, record[2]-srcwin[0],
-                             record[3]-srcwin[1],
-                             sqlite3.Binary(str(record[4])))
+                with conn_in.cursor("tiles") as cursor_tiles:
+                    cursor_tiles.execute(
+                        "SELECT id, zoom_level, tile_column, tile_row, "
+                        "tile_data FROM \"%s\"%s;" % (
+                            gpkg_name, "" if constraint is None else " WHERE "
+                            + constraint
                         )
-                    except Exception as e:
-                        conn_out.rollback()
-                        sys.stderr.write(
-                            "ERROR: Input doesn't seem to be a valid "
-                            "GeoPackage. Error message was: '%s'.\n"
-                            % e.message
-                        )
-                        sys.exit(1)
+                    )
+
+                    cursor_out = conn_out.cursor()
+                    cursor_out.execute(
+                        "SELECT max(zoom_level) FROM gpkg_tile_matrix WHERE "
+                        "table_name = '%s';" % gpkg_name
+                    )
+                    zoom_offset = max_zoom_level - cursor_out.fetchone()[0]
+                    for record in cursor_tiles:
+                        try:
+                            cursor_out.execute(
+                                "INSERT INTO \"%s\" (zoom_level, tile_column, "
+                                "tile_row, tile_data) VALUES (?, ?, ?, ?);"
+                                % gpkg_name,
+                                (record[1]-zoom_offset, record[2]-srcwin[0],
+                                 record[3]-srcwin[1],
+                                 sqlite3.Binary(str(record[4])))
+                            )
+                        except Exception as e:
+                            conn_out.rollback()
+                            sys.stderr.write(
+                                "ERROR: Input doesn't seem to be a valid "
+                                "GeoPackage. Error message was: '%s'.\n"
+                                % e.message
+                            )
+                            sys.exit(1)
 
 
 def main():

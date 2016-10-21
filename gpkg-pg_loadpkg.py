@@ -36,6 +36,10 @@
 #   This script might get a switch to make a selection of the data to be
 #   loaded, for example based on a spatial bounding box.
 #
+# Ideas for future:
+#
+#   * Add a progress indicator
+#
 #------------------------------------------------------------------------------
 
 import sys
@@ -81,10 +85,9 @@ def copy_table(conn_in, conn_out, table_name, constraint=None):
             "SELECT * FROM \"%s\"%s;" % (table_name, "" if constraint is None
                                          else " WHERE " + constraint)
         )
-        records = cursor_in.fetchall()
 
         with conn_out.cursor() as cursor_out:
-            for record in records:
+            for record in cursor_in:
                 values = record_to_string(record)
                 try:
                     cursor_out.execute(
@@ -274,9 +277,8 @@ def read_gpkg(gpkg_filename, pg_connection_string):
                 "SELECT table_name FROM gpkg_contents "
                 "WHERE data_type = 'tiles';"
             )
-            table_names = cursor_in.fetchall()
             with conn_out.cursor() as cursor_out:
-                for table_name in table_names:
+                for table_name in cursor_in:
                     try:
                         create_tiles_table(
                             conn_in, conn_out, cursor_out, table_name[0]
